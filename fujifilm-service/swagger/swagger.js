@@ -53,5 +53,6 @@
     }
   },
   "definitions": {},
-  "securityDefinitions": {}
+  "securityDefinitions": {},
+  "basePath": "/dev"
 };

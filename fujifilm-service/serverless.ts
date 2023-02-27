@@ -34,6 +34,7 @@ const serverlessConfiguration: AWS = {
     },
     autoswagger: {
       apiType: "http",
+      basePath: "/dev",
     },
   },
 };
