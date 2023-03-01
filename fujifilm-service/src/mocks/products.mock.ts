@@ -1,6 +1,6 @@
 import { Product } from "src/models/product";
 
-export const productsMock: Product[] = [
+const products: Product[] = [
   {
     id: "1",
     title: "xt4",
@@ -30,3 +30,5 @@ export const productsMock: Product[] = [
     count: 5,
   },
 ];
+
+export const productsMock: Promise<Product[]> = Promise.resolve(products);

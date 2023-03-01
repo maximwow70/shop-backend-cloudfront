@@ -8,7 +8,7 @@ const getProductById: ValidatedEventAPIGatewayProxyEvent<any> = async (
   event: any
 ) => {
   const requestedProductId: string = event.pathParameters?.id;
-  const product: Product = productsMock.find(
+  const product: Product = (await productsMock).find(
     (product: Product) => product.id === requestedProductId
   );
   if (product) {
