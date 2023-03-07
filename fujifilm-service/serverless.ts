@@ -2,6 +2,7 @@ import type { AWS } from "@serverless/typescript";
 
 import getProducts from "@functions/get-products";
 import getProductById from "@functions/get-product-by-id";
+import createProduct from "@functions/create-product";
 
 const serverlessConfiguration: AWS = {
   service: "fujifilm-service",
@@ -56,7 +57,7 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
     },
   },
-  functions: { getProducts, getProductById },
+  functions: { getProducts, getProductById, createProduct },
   package: { individually: true },
   custom: {
     esbuild: {
