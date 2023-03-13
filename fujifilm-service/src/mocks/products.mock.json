@@ -1,0 +1,42 @@
+{
+  "ProductsTable": [
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "1" },
+          "title": { "S": "xt4" },
+          "description": { "S": "xt4 description" },
+          "price": { "N": "2000" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "id": { "S": "2" },
+          "title": { "S": "xt200" },
+          "description": { "S": "xt200 description" },
+          "price": { "N": "999" }
+        }
+      }
+    }
+  ],
+  "StocksTable": [
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": { "S": "1" },
+          "count": { "N": "7" }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "product_id": { "S": "2" },
+          "count": { "N": "3" }
+        }
+      }
+    }
+  ]
+}

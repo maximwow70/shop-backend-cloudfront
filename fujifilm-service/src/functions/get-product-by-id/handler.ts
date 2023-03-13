@@ -1,20 +1,28 @@
-import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/api-gateway";
-import { formatJSONResponse } from "@libs/api-gateway";
-import { middyfy } from "@libs/lambda";
-import { productsMock } from "src/mocks/products.mock";
+import type { ValidatedEventAPIGatewayProxyEvent } from "src/core/api-gateway";
+import { formatJSONResponse } from "src/core/api-gateway";
+import { middyfy } from "src/core/lambda";
 import { Product } from "src/models/product";
+import { STATUS_CODE } from "src/models/status-code.enum";
+
+import productsService from "../../database/product.service";
 
 const getProductById: ValidatedEventAPIGatewayProxyEvent<any> = async (
   event: any
 ) => {
-  const requestedProductId: string = event.pathParameters?.id;
-  const product: Product = (await productsMock).find(
-    (product: Product) => product.id === requestedProductId
-  );
-  if (product) {
-    return formatJSONResponse(200, { product });
-  } else {
-    return formatJSONResponse(400, { error: "Not found" });
+  try {
+    const product: Product = await productsService.getProduct(
+      event.pathParameters?.id
+    );
+    if (product) {
+      console.log(`getProductById success: ${product}`);
+      return formatJSONResponse(STATUS_CODE.OK, { product });
+    } else {
+      console.log(`getProductById not found`);
+      return formatJSONResponse(STATUS_CODE.NOT_FOUND, { error: "Not found" });
+    }
+  } catch (error) {
+    console.log(`getProductById failed`);
+    return formatJSONResponse(STATUS_CODE.SERVER_ERROR, { error });
   }
 };
 
