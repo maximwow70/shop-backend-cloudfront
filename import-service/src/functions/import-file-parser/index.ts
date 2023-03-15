@@ -5,13 +5,15 @@ export default {
   events: [
     {
       s3: {
-        bucket: "get",
+        bucket: "fujifilm-products-service",
         event: "s3:ObjectCreated:*",
-        rules: {
-          prefix: "uploaded/",
-        },
+        rules: [
+          {
+            prefix: "uploaded/",
+          },
+        ],
         existing: true,
       },
     },
-  ] as any,
+  ],
 };
