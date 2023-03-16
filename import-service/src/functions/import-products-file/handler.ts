@@ -1,8 +1,7 @@
-import { STATUS_CODE } from "@shop/core";
-
 import type { ValidatedEventAPIGatewayProxyEvent } from "src/core/api-gateway";
 import { formatJSONResponse } from "src/core/api-gateway";
 import { middyfy } from "src/core/lambda";
+import { STATUS_CODE } from "src/core/models/status-code.enum";
 
 const importProductsFile: ValidatedEventAPIGatewayProxyEvent<any> = async (
   event

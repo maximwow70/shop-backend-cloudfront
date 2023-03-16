@@ -17,22 +17,17 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
-      BUCKET_NAME: "fujifilm-products-service",
     },
-    iam: {
-      role: {
-        statements: [
-          {
-            Effect: "Allow",
-            Action: ["s3:*"],
-            Resource: [
-              `arn:aws:s3:::${process.env.BUCKET_NAME}`,
-              `arn:aws:s3:::${process.env.BUCKET_NAME}/*`,
-            ],
-          },
+    iamRoleStatements: [
+      {
+        Effect: "Allow",
+        Action: ["s3:*"],
+        Resource: [
+          `arn:aws:s3:::fujifilm-products-service`,
+          `arn:aws:s3:::fujifilm-products-service/*`,
         ],
       },
-    },
+    ],
   },
   // import the function via paths
   functions: { importProductsFile, importFileParser },

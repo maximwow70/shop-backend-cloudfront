@@ -1,7 +1,7 @@
 import { DocumentClient } from "aws-sdk/clients/dynamodb";
 import { dynamoDBClient } from "./database";
 import { v4 as uuid } from "uuid";
-import { Product } from "@shop/core";
+import { Product } from "src/core/models/product";
 
 class ProductService {
   private productsTableName: string = "ProductsTable";
