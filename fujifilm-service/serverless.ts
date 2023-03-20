@@ -1,8 +1,6 @@
 import type { AWS } from "@serverless/typescript";
-
-import getProducts from "@functions/get-products";
-import getProductById from "@functions/get-product-by-id";
-import createProduct from "@functions/create-product";
+import { getProductById, getProducts } from "src/functions";
+import createProduct from "src/functions/create-product";
 
 const serverlessConfiguration: AWS = {
   service: "fujifilm-service",

@@ -1,8 +1,8 @@
 import type { ValidatedEventAPIGatewayProxyEvent } from "src/core/api-gateway";
 import { formatJSONResponse } from "src/core/api-gateway";
 import { middyfy } from "src/core/lambda";
-import { Product } from "src/models/product";
-import { STATUS_CODE } from "src/models/status-code.enum";
+import { Product } from "src/core/models/product";
+import { STATUS_CODE } from "src/core/models/status-code.enum";
 
 import productsService from "../../database/product.service";
 
