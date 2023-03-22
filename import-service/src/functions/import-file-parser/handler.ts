@@ -5,6 +5,7 @@ import {
   CopyObjectCommand,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
+import * as AWS from "aws-sdk";
 import { Readable } from "stream";
 import { formatJSONResponse } from "src/core/api-gateway";
 import { STATUS_CODE } from "src/core/models/status-code.enum";
@@ -12,6 +13,7 @@ import { STATUS_CODE } from "src/core/models/status-code.enum";
 const importFileParser = async (event) => {
   const BUCKET_NAME: string = "fujifilm-products-service";
   const client = new S3Client({ region: "us-east-1" });
+  const sqs = new AWS.SQS({ region: "us-east-1" });
 
   try {
     for (const record of event.Records) {
@@ -28,7 +30,19 @@ const importFileParser = async (event) => {
 
       await (getObjectResult.Body as Readable)
         .pipe(csv({}))
-        .on("data", (data) => results.push(data))
+        .on("data", (data) => {
+          results.push(data);
+          const message: string = JSON.stringify(data);
+          sqs.sendMessage(
+            {
+              QueueUrl: "https://sqs.us-east-1.amazonaws.com/298060983177/catalogItemsQueue",
+              MessageBody: message,
+            },
+            () => {
+              console.log("Send message: ", message);
+            }
+          );
+        })
         .on("end", () => {
           console.log(results);
         });

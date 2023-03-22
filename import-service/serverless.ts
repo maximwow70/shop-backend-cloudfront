@@ -27,6 +27,11 @@ const serverlessConfiguration: AWS = {
           `arn:aws:s3:::fujifilm-products-service/*`,
         ],
       },
+      {
+        Effect: "Allow",
+        Action: ["sqs:SendMessage", "sqs:GetQueueUrl"],
+        Resource: "arn:aws:sqs:us-east-1:298060983177:catalogItemsQueue",
+      },
     ],
   },
   // import the function via paths
