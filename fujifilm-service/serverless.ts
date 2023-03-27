@@ -1,6 +1,10 @@
 import type { AWS } from "@serverless/typescript";
-import { getProductById, getProducts } from "src/functions";
-import createProduct from "src/functions/create-product";
+import {
+  catalogBatchProcess,
+  getProductById,
+  getProducts,
+  createProduct,
+} from "src/functions";
 
 const serverlessConfiguration: AWS = {
   service: "fujifilm-service",
@@ -47,6 +51,11 @@ const serverlessConfiguration: AWS = {
             ],
             Resource: "arn:aws:dynamodb:us-east-1:*:table/StocksTable",
           },
+          {
+            Effect: "Allow",
+            Action: "sns:*",
+            Resource: { Ref: "createProductTopic" },
+          },
         ],
       },
     },
@@ -55,7 +64,12 @@ const serverlessConfiguration: AWS = {
       NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000",
     },
   },
-  functions: { getProducts, getProductById, createProduct },
+  functions: {
+    getProducts,
+    getProductById,
+    createProduct,
+    catalogBatchProcess,
+  },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -124,6 +138,29 @@ const serverlessConfiguration: AWS = {
           ProvisionedThroughput: {
             ReadCapacityUnits: 1,
             WriteCapacityUnits: 1,
+          },
+        },
+      },
+      CatalogItemsQueue: {
+        Type: "AWS::SQS::Queue",
+        Properties: {
+          QueueName: "catalogItemsQueue",
+        },
+      },
+      createProductTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          DisplayName: "Create Product Topic",
+          TopicName: "createProductTopic",
+        },
+      },
+      createProductTopicSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: "maximwow70@gmail.com",
+          Protocol: "email",
+          TopicArn: {
+            Ref: "createProductTopic",
           },
         },
       },
