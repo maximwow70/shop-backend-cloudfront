@@ -32,6 +32,12 @@ const serverlessConfiguration: AWS = {
         Action: ["sqs:SendMessage", "sqs:GetQueueUrl"],
         Resource: "arn:aws:sqs:us-east-1:298060983177:catalogItemsQueue",
       },
+      {
+        Effect: "Allow",
+        Action: ["lambda:InvokeFunction"],
+        Resource:
+          "arn:aws:lambda:us-east-1:298060983177:function:authorization-service-dev-basicAuthorizer",
+      },
     ],
   },
   // import the function via paths
@@ -47,6 +53,23 @@ const serverlessConfiguration: AWS = {
       define: { "require.resolve": undefined },
       platform: "node",
       concurrency: 10,
+    },
+  },
+  resources: {
+    Resources: {
+      GatewayResponse: {
+        Type: "AWS::ApiGateway::GatewayResponse",
+        Properties: {
+          RestApiId: {
+            Ref: "ApiGatewayRestApi",
+          },
+          ResponseType: "DEFAULT_4XX",
+          ResponseParameters: {
+            "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+            "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
+          },
+        },
+      },
     },
   },
 };
